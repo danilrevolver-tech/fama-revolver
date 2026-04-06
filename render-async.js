@@ -5,6 +5,7 @@ async function renderHomeViewAsync() {
   const login = getCurrentLogin();
   const isPrivileged = hasRole(ROLES.OWNER, ROLES.ADMIN);
   const newsList = (await getNews()).slice().reverse();
+  const treasury = await getTreasury();
 
   let html = `
     <section class="view view-home">
@@ -13,6 +14,35 @@ async function renderHomeViewAsync() {
         ${isPrivileged ? '<button class="btn btn--primary" id="toggle-news-form" style="padding:6px 14px;">+ Новая новость</button>' : ''}
       </div>
   `;
+
+  if (treasury && (treasury.title || treasury.goal)) {
+    const pct = treasury.goal > 0 ? Math.min(100, Math.round((treasury.current / treasury.goal) * 100)) : 0;
+    const formatMoney = (n) => Number(n).toLocaleString('ru-RU') + ' $';
+    let barColor = '#3b82f6';
+    if (pct >= 100) barColor = '#10b981';
+    else if (pct >= 60) barColor = '#f59e0b';
+
+    html += `
+      <div class="card" style="margin-bottom:20px; border: 1px solid #1e293b; padding: 0; overflow: hidden;">
+        ${treasury.image ? `<img src="${escapeHtml(treasury.image)}" alt="Фото цели" style="width:100%; max-height:200px; object-fit:cover;" onerror="this.style.display='none'" />` : ''}
+        <div style="padding: 16px;">
+          <h3 style="margin: 0 0 6px; font-size:1.2rem; color:#f8fafc;">Общак: ${escapeHtml(treasury.title)}</h3>
+          ${treasury.description ? `<p style="color:#9ca3af; margin: 0 0 12px; font-size:0.9rem;">${escapeHtml(treasury.description)}</p>` : ''}
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="color:#d1d5db; font-size:0.9rem;">Собрано: <strong style="color:#f8fafc;">${formatMoney(treasury.current)}</strong></span>
+            <span style="color:#d1d5db; font-size:0.9rem;">Цель: <strong style="color:#f8fafc;">${formatMoney(treasury.goal)}</strong></span>
+          </div>
+          <div style="background:#1e293b; border-radius:999px; height:16px; overflow:hidden; margin-bottom:8px;">
+            <div style="width:${pct}%; background: linear-gradient(90deg, ${barColor}, ${barColor}cc); height:100%; border-radius:999px; transition: width 0.8s ease; display:flex; align-items:center; justify-content:center;">
+              ${pct > 10 ? `<span style="font-size:0.7rem; font-weight:bold; color:#fff;">${pct}%</span>` : ''}
+            </div>
+          </div>
+          ${pct <= 10 ? `<div style="text-align:right; font-size:0.8rem; color:#6b7280;">${pct}%</div>` : ''}
+          ${pct >= 100 ? `<div class="notice notice--info" style="margin-top:8px; font-size:0.9rem;">Цель достигнута! 🎉</div>` : ''}
+        </div>
+      </div>
+    `;
+  }
 
   if (isPrivileged) {
     html += `
