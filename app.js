@@ -65,7 +65,6 @@ const STORAGE_KEYS = {
   UNION_FORUM: "revolver_union_forum_posts",
   UNION_COMMENTS: "revolver_union_comments",
   MARKET: "revolver_market",
-  MESSAGES: "revolver_messages",
   PROFILE_MESSAGES: "revolver_profile_msgs",
   NEWS: "revolver_news",
   TREASURY: "revolver_treasury",
@@ -2534,7 +2533,7 @@ async function getMessages() {
   const { data, error } = await supabase
     .from("messages")
     .select("*")
-    .or(`to.eq.${currentUser?.email},from.eq.${currentUser?.email}`)
+   .or(`to_id.eq.${currentUser.id},from_id.eq.${currentUser.id}`)
     .order("created_at", { ascending: false });
   return error ? [] : (data || []);
 }
