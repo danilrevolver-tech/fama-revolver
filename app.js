@@ -2717,9 +2717,6 @@ async function renderView(view) {
       case "market":
         await renderMarketViewAsync();
         break;
-      case "messages":
-        await renderMessagesViewAsync();
-        break;
       case "profile":
         if (!currentProfileUser && getCurrentLogin()) currentProfileUser = getCurrentLogin();
         await renderProfileView();
