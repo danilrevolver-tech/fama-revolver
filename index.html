@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revolver</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__title">Revolver</div>
+    <div class="header__auth" id="auth-bar">
+      <!-- Заполняется через JS -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar" id="sidebar">
+      <button class="sidebar__toggle" id="sidebar-toggle">☰</button>
+      <ul class="menu" id="side-menu">
+        <li data-view="profile" class="menu__item">Мой профиль</li>
+        <li data-view="home" class="menu__item menu__item--active">Главная страница</li>
+        <li data-view="complaints" class="menu__item">Жалобы</li>
+        <li data-view="unions" class="menu__item">Союзы</li>
+        <li data-view="ranks" class="menu__item">Цены на ранги</li>
+        <li data-view="senior" class="menu__item">Старший состав</li>
+        <li data-view="nk1" class="menu__item">Подразделение НК-1</li>
+        <li data-view="sso" class="menu__item">Подразделение ССО</li>
+        <li data-view="forum" class="menu__item">Форум</li>
+        <li data-view="union-forum" class="menu__item">Форум союзов</li>
+        <li data-view="market" class="menu__item">Рынок</li>
+        <li data-view="messages" class="menu__item">Личные сообщения</li>
+        <li data-view="treasury" class="menu__item">Общак</li>
+        <li data-view="events" class="menu__item">События</li>
+        <li data-view="leaderboard" class="menu__item">🏆 Топ бойцов</li>
+        <li data-view="admin" class="menu__item" id="admin-menu-item" style="display:none;">Админ-панель</li>
+      </ul>
+    </nav>
+
+    <main class="content" id="main-content">
+      <!-- Динамический контент -->
+    </main>
+  </div>
+
+  <!-- Модальное окно входа -->
+  <div class="modal" id="login-modal">
+    <div class="modal__backdrop" data-close="login-modal"></div>
+    <div class="modal__dialog">
+      <button class="modal__close" data-close="login-modal">&times;</button>
+      <h2>Вход</h2>
+      <form id="login-form" class="form">
+        <div class="form__group">
+          <label for="login-username">Email</label>
+          <input type="email" id="login-username" placeholder="example@mail.com" required />
+        </div>
+        <div class="form__group">
+          <label for="login-password">Пароль</label>
+          <input type="password" id="login-password" required />
+        </div>
+        <div class="form__error" id="login-error"></div>
+        <button type="submit" class="btn btn--primary">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Модальное окно регистрации -->
+  <div class="modal" id="register-modal">
+    <div class="modal__backdrop" data-close="register-modal"></div>
+    <div class="modal__dialog">
+      <button class="modal__close" data-close="register-modal">&times;</button>
+      <h2>Регистрация</h2>
+      <form id="register-form" class="form">
+        <div class="form__group">
+          <label>Логин (Игровой никнейм)</label>
+          <input type="text" id="register-username" placeholder="Ivan_Petrov" required />
+        </div>
+        <div class="form__group">
+          <label for="register-email">Email</label>
+          <input type="email" id="register-email" placeholder="example@mail.com" required />
+        </div>
+        <div class="form__group">
+          <label for="register-password">Пароль</label>
+          <input type="password" id="register-password" required />
+        </div>
+        <div class="form__group">
+          <label for="register-password2">Подтверждение пароля</label>
+          <input type="password" id="register-password2" required />
+        </div>
+        <div class="form__error" id="register-error"></div>
+        <div class="form__success" id="register-success"></div>
+        <button type="submit" class="btn btn--primary">Зарегистрироваться</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Если вы хотите управлять ключами из Netlify или другого окружения,
+    // раскомментируйте и замените эти значения.
+    // window.SUPABASE_URL = "https://your-project.supabase.co";
+    // window.SUPABASE_KEY = "your-public-anon-key";
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+  <script src="render-async.js"></script>
+  <script src="async-wrappers.js"></script>
+</body>
+</html>
+
